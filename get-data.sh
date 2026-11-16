@@ -5,7 +5,7 @@ set -euo pipefail
 usage() {
     cat >&2 <<'EOF'
 usage: ./get-data.sh [-n] [-o DIR] [TEAM]
-  TEAM  your team repo name (hw1-<team>, a URL works too); default: the origin remote,
+  TEAM  your repository as OWNER/REPO (its GitHub URL works too); default: the origin remote,
         or the reference set (2026-09-15, K=10) if there is none
   -n    print the parameters only
   -o    download directory (default: data/ next to this script); complete files are skipped
@@ -29,8 +29,10 @@ team=${1:-}
 if [ -z "$team" ]; then
     team=$(git -C "$(dirname "$0")" remote get-url origin 2>/dev/null || true)
 fi
-team=$(basename "${team%.git}" | tr '[:upper:]' '[:lower:]')
-case $team in hw1-*) ;; *) team= ;; esac
+# owner/repo from OWNER/REPO or a github.com https/ssh URL; anything else means no team
+team=$(printf '%s' "$team" | sed -E 's#/+$##; s#\.git$##' |
+    sed -nE 's#^((https?://|ssh://git@)github\.com/|git@github\.com:)?([A-Za-z0-9._-]+/[A-Za-z0-9._-]+)$#\3#p' |
+    tr '[:upper:]' '[:lower:]')
 
 sha256() { if command -v sha256sum >/dev/null; then sha256sum; else shasum -a 256; fi | cut -c1-64; }
 # n-th group of 4 hex digits of the seed, as a number

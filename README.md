@@ -1,8 +1,8 @@
 # HW1: MapReduce & Hadoop
 
-Your team's repository for Homework 1, `bigdata-management-course/hw1-<team>`; every member was invited to it with write access. The handout (hw1.pdf on Moodle) is the specification; this file
-only says where things are. Invitations, `gh auth login`, cloning and reading CI: the guide *Getting your course
-repository* on Moodle.
+Your team's repository for Homework 1, created from this template under one member's account (private, with the other members and `C0rWin` added as collaborators). The handout (hw1.pdf on Moodle) is the specification; this file
+only says where things are. Creating the repository, `gh auth login`, cloning and reading CI: the guide *Getting your course
+repository* on Moodle. Every member submits the repository URL in the Moodle assignment *HW1 repository link*.
 
 | path | what |
 |---|---|
