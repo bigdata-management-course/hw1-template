@@ -209,6 +209,15 @@ else
     fail "report/counters.json: $(cat "$WORK/counters.txt")"
 fi
 
+# Team table in README.md: rows with every cell filled; a team has 2-3 members.
+team=$(awk '/^## /{t=($0=="## Team")} t && /^\|/{tbl=1; if (!/^\|[- |]*$/ && !/full name/) print; next} tbl{exit}' "$ROOT/README.md" |
+    awk -F'|' '{n=0; for (i=2; i<NF; i++) if ($i ~ /[^[:space:]]/) n++} n==NF-2' | wc -l | tr -d ' ')
+if [ "$team" -ge 2 ]; then
+    pass "README.md: Team table has $team members"
+else
+    fail "README.md: Team table has $team fully filled rows (need 2-3: name, ID, email, GitHub username)"
+fi
+
 echo
 printf '%s\n' "${report[@]}" | tee "$WORK/summary.txt"
 if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then

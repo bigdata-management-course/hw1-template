@@ -1,5 +1,15 @@
 # HW1: MapReduce & Hadoop
 
+## Team
+
+Fill in one row per member in your first commit (keep the repository private: this table holds your IDs).
+
+| full name | ID number | email | GitHub username |
+|---|---|---|---|
+|  |  |  |  |
+|  |  |  |  |
+|  |  |  |  |
+
 Your team's repository for Homework 1, created from this template under one member's account (private, with the other members and `C0rWin` added as collaborators). The handout (hw1.pdf on Moodle) is the specification; this file
 only says where things are. Creating the repository, `gh auth login`, cloning and reading CI: the guide *Getting your course
 repository* on Moodle. Every member submits the repository URL in the Moodle assignment *HW1 repository link*.
