@@ -1,0 +1,40 @@
+{
+  "task1-combiner": {
+    "Launched map tasks": null,
+    "Map input records": null,
+    "Map output records": null,
+    "Map output bytes": null,
+    "Combine input records": null,
+    "Combine output records": null,
+    "Reduce input records": null,
+    "Reduce shuffle bytes": null,
+    "MALFORMED": null
+  },
+  "task1-nocombiner": {
+    "Launched map tasks": null,
+    "Map output records": null,
+    "Map output bytes": null,
+    "Combine input records": null,
+    "Combine output records": null,
+    "Reduce input records": null,
+    "Reduce shuffle bytes": null
+  },
+  "task2": {
+    "Launched map tasks": null,
+    "Map output records": null,
+    "Combine output records": null
+  },
+  "task3": {
+    "Map input records": null,
+    "UNMATCHED_LANGUAGES": null,
+    "LANGUAGES_WITHOUT_VIEWS": null
+  },
+  "task4-job1": {
+    "Map output records": null,
+    "Combine output records": null
+  },
+  "task4-job2": {
+    "Launched map tasks": null,
+    "Reduce output records": null
+  }
+}

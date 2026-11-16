@@ -1,0 +1,35 @@
+---
+# Feedback only: builds and runs every task on the tiny sample in smoke/.
+# Your grade comes from a separate run on data you have not seen.
+name: smoke
+
+"on":
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# A newer push to main supersedes the running check.
+concurrency:
+  group: smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "11"
+          cache: maven
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/hw1-hadoop
+          key: hadoop-3.4.1-lean
+      - name: Smoke test
+        run: smoke/run.sh
