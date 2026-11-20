@@ -4,6 +4,12 @@
 
 Fill in one row per member in your first commit (keep the repository private: this table holds your IDs).
 
+One row per member, 2-3 members; delete unused rows or leave them empty. The smoke test checks the table.
+- ID number: exactly 9 digits, padded with leading zeros.
+- GitHub username: the bare name, without `@` or a URL.
+
+Example row: `| Dana Levi | 012345674 | dana@example.com | danalevi |`
+
 | full name | ID number | email | GitHub username |
 |---|---|---|---|
 |  |  |  |  |
@@ -12,7 +18,14 @@ Fill in one row per member in your first commit (keep the repository private: th
 
 Your team's repository for Homework 1, created from this template under one member's account (private, with the other members and `C0rWin` added as collaborators). The handout (hw1.pdf on Moodle) is the specification; this file
 only says where things are. Creating the repository, `gh auth login`, cloning and reading CI: the guide *Getting your course
-repository* on Moodle. Every member submits the repository URL in the Moodle assignment *HW1 repository link*.
+repository* on Moodle. Every member submits the same online text in the Moodle assignment *HW1 repository link*: the repository URL, then one
+line per member, copied from the Team table without the outer pipes, so both match:
+
+```
+https://github.com/<owner>/<repo>
+<full name> | <ID number> | <email> | <GitHub username>
+<full name> | <ID number> | <email> | <GitHub username>
+```
 
 | path | what |
 |---|---|

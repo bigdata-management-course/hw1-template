@@ -209,13 +209,59 @@ else
     fail "report/counters.json: $(cat "$WORK/counters.txt")"
 fi
 
-# Team table in README.md: rows with every cell filled; a team has 2-3 members.
-team=$(awk '/^## /{t=($0=="## Team")} t && /^\|/{tbl=1; if (!/^\|[- |]*$/ && !/full name/) print; next} tbl{exit}' "$ROOT/README.md" |
-    awk -F'|' '{n=0; for (i=2; i<NF; i++) if ($i ~ /[^[:space:]]/) n++} n==NF-2' | wc -l | tr -d ' ')
-if [ "$team" -ge 2 ]; then
-    pass "README.md: Team table has $team members"
+# Team table in README.md: 2-3 members, every cell filled and well-formed.
+if python3 - "$ROOT/README.md" >"$WORK/team.txt" 2>&1 <<'EOF'
+import re
+import sys
+
+team = started = False
+rows = []
+for line in open(sys.argv[1], encoding="utf-8"):
+    s = line.strip()
+    if s.startswith("## "):
+        team = s == "## Team"
+    elif team and s.startswith("|"):
+        started = True
+        rows.append([c.strip() for c in s.strip("|").split("|")])
+    elif team and started:
+        break
+data = [r for r in rows[1:] if not re.fullmatch(r"[-:\s|]*", "".join(r))]  # rows[0] is the header
+
+
+def id_ok(n):  # Israeli ID check digit
+    t = sum(sum(divmod(int(d) * (1 + i % 2), 10)) for i, d in enumerate(n))
+    return t % 10 == 0
+
+
+problems, members = [], 0
+for i, r in enumerate(data, 1):
+    if not any(r):
+        continue
+    members += 1
+    who = f"row {i}" + (f" ({r[0]})" if r[0] else "")
+    if len(r) != 4 or not all(r):
+        problems.append(f"{who}: need 4 filled cells: full name, ID number, email, GitHub username")
+        continue
+    _, uid, email, gh = r
+    if not re.fullmatch(r"\d{9}", uid):
+        problems.append(f"{who}: ID number must be exactly 9 digits (pad with leading zeros)")
+    elif not id_ok(uid):
+        problems.append(f"{who}: ID number fails the check digit; if your ID is correct, tell us on the course forum")
+    if not re.fullmatch(r"[^@\s|]+@[^@\s|]+\.[^@\s|]+", email):
+        problems.append(f"{who}: email is not of the form name@host.tld")
+    if len(gh) > 39 or not re.fullmatch(r"[A-Za-z0-9](-?[A-Za-z0-9])*", gh):
+        problems.append(f"{who}: GitHub username must be the bare name, no @ or URL")
+if not 2 <= members <= 3:
+    problems.append(f"need 2-3 members, found {members}")
+if problems:
+    sys.exit("\n".join(problems))
+print(members)
+EOF
+then
+    pass "README.md: Team table has $(cat "$WORK/team.txt") members"
 else
-    fail "README.md: Team table has $team fully filled rows (need 2-3: name, ID, email, GitHub username)"
+    fail "README.md: Team table"
+    while IFS= read -r l; do report+=("      $l"); done <"$WORK/team.txt"
 fi
 
 echo
